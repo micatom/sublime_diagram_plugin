@@ -1,3 +1,9 @@
+# Why Fork
+
+I forked the project to :
+* allow persistence of the generated png file into a png surdir. 
+* execute process in the file dir to make plantuml !include command works
+
 # Overview
 
 This is a plugin that renders diagrams from your selection in Sublime Text 2
