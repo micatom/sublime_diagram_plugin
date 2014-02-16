@@ -15,8 +15,7 @@ command.  Multiselections are allowed.  Each diagram will be generated in a
 uniquely named file.
 
 If a diagram handler recognizes a diagram in the selection, it will render it
-and pop it up in a detected viewer.  All files are created in such a way that
-they will be cleaned up unless Sublime Text dies a particularly horrible death.
+and pop it up in a detected viewer.
 
 If you wish to override the viewer used, create a user version of
 Diagram.sublime-settings file in the usual way.
@@ -29,9 +28,6 @@ To install from scratch, it's necessary to have:
 * Java (download from java.sun.com)
 * Graphviz (I recommend "homebrew" on the Mac)
 * Sublime Text 2 or 3
-
-To install, just put a checkout of this project into your Packages directory in
-Sublime Text.
 
 
 # Support
@@ -58,11 +54,7 @@ Sublime Text should detect the plugin and automatically load it.
 
 The source is available via git at:
 
-https://github.com/jvantuyl/sublime_diagram_plugin.git
-
-Or as a tarball at:
-
-https://github.com/jvantuyl/sublime_diagram_plugin/tarball/master
+https://github.com/micatom/sublime_diagram_plugin.git
 
 # Thanks
 
