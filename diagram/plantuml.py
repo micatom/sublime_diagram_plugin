@@ -7,9 +7,13 @@ from tempfile import NamedTemporaryFile
 
 
 class PlantUMLDiagram(BaseDiagram):
-    def __init__(self, processor, sourceFile, text):
-        super(PlantUMLDiagram, self).__init__(processor, sourceFile, text)
-        self.file = NamedTemporaryFile(prefix=sourceFile, suffix='.png', delete=False)
+    def __init__(self, processor, sourceFile, text, targetFile):
+        super(PlantUMLDiagram, self).__init__(processor, sourceFile, text, targetFile)
+        self.file = open(targetFile + '.png', 'w')
+        workdir = sourceFile.split('/')
+        workdir.pop()
+        self.workdir = '/'.join(str(x) for x in workdir)
+        print(self.workdir)
 
     def generate(self):
         puml = execute(
@@ -21,7 +25,8 @@ class PlantUMLDiagram(BaseDiagram):
                 '-tpng'
             ],
             stdin=PIPE,
-            stdout=self.file)
+            stdout=self.file,
+            cwd=self.workdir )
         puml.communicate(input=self.text.encode('UTF-8'))
         if puml.returncode != 0:
             print("Error Processing Diagram:")

@@ -5,9 +5,10 @@ from .preview import PreviewViewer
 from .eog import EyeOfGnomeViewer
 from .freedesktop_default import FreedesktopDefaultViewer
 from threading import Thread
-from os.path import splitext
+from os.path import splitext, exists
 from sublime import error_message, load_settings
 import sys
+from os import makedirs
 
 INITIALIZED = False
 AVAILABLE_PROCESSORS = [PlantUMLProcessor]
@@ -99,8 +100,18 @@ def process(view):
         sourceFile = view.file_name()
         if sourceFile is None:
             sourceFile = 'untitled.txt'
-        sourceFile = splitext(sourceFile)[0] + '-'
-        t = Thread(target=render_and_view, args=(sourceFile, diagrams,))
+        sourceFile = splitext(sourceFile)[0]
+        path = sourceFile.split('/')
+        # Create Dir.
+        fileName = path[len(path)-1]
+        path[len(path)-1] = 'png'
+        targetDir = '/'.join(str(x) for x in path)
+        if not exists(targetDir):
+            makedirs(targetDir)
+        path[len(path)-1] = 'png/'+fileName
+        targetFile = '/'.join(str(x) for x in path)
+        print(sourceFile)
+        t = Thread(target=render_and_view, args=(sourceFile, diagrams, targetFile,))
         t.daemon = True
         t.start()
         return True
@@ -108,12 +119,12 @@ def process(view):
         return False
 
 
-def render_and_view(sourceFile, diagrams):
+def render_and_view(sourceFile, diagrams, targetFile):
     print("Rendering %r" % diagrams)
     diagram_files = []
 
     for processor, blocks in diagrams:
-        diagram_files.extend(processor.process(sourceFile,blocks))
+        diagram_files.extend(processor.process(sourceFile,blocks, targetFile))
 
     if diagram_files:
         print("%r viewing %r" % (ACTIVE_VIEWER, [d.name for d in diagram_files]))

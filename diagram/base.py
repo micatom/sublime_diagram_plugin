@@ -1,8 +1,9 @@
 class BaseDiagram(object):
-    def __init__(self, processor, sourceFile, text):
+    def __init__(self, processor, sourceFile, text, targetFile):
         self.proc = processor
         self.text = text
         self.sourceFile = sourceFile
+        self.targetFile = targetFile
 
     def generate(self):
         raise NotImplementedError('abstract base class is abstract')
@@ -17,12 +18,12 @@ class BaseProcessor(object):
     def extract_blocks(self, view):
         raise NotImplementedError('abstract base class is abstract')
 
-    def process(self, sourceFile, text_blocks):
+    def process(self, sourceFile, text_blocks, targetFile):
         diagrams = []
         for block in text_blocks:
             try:
                 print("Rendering diagram for block: %r" % block)
-                diagram = self.DIAGRAM_CLASS(self, sourceFile, block)
+                diagram = self.DIAGRAM_CLASS(self, sourceFile, block, targetFile)
                 rendered = diagram.generate()
                 diagrams.append(rendered)
             except Exception as e:
